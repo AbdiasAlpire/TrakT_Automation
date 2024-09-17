@@ -19,15 +19,12 @@ browser = ConfigReader.read_configuration("Basic Information", "browser")
 ALLURE_REPORT_DIR = 'allure_reports'
 
 def clean_allure_reports():
-    """Cleans up the allure reports directory before each test run."""
     if os.path.exists(ALLURE_REPORT_DIR):
         shutil.rmtree(ALLURE_REPORT_DIR)
     os.makedirs(ALLURE_REPORT_DIR)
 
 def before_scenario(context, scenario):
-    """Sets up the browser before each test scenario."""
     clean_allure_reports()
-
     if browser == 'chrome':
         chrome_install = ChromeDriverManager().install()
         folder = os.path.dirname(chrome_install)
@@ -62,17 +59,18 @@ def before_scenario(context, scenario):
 
 @allure.step
 def take_screenshot(context, step_name):
-    """Takes a screenshot during test steps."""
     allure.attach(context.driver.get_screenshot_as_png(), name=step_name, attachment_type=allure.attachment_type.PNG)
 
 def after_step(context, step):
-    """Logs information and takes screenshots after each step."""
     take_screenshot(context, step.name)
     if step.status == "failed":
         with allure.step(f"Error in step: {step.name}"):
-            allure.attach(step.exception, name="Error Message", attachment_type=allure.attachment_type.TEXT)
+            exception_message = str(step.exception) if step.exception else "No exception message"
+            allure.attach(exception_message, name="Error Message", attachment_type=allure.attachment_type.TEXT)
 
-def after_all(context):
-    """Serves and opens the Allure report after the test execution."""
-    subprocess.run(f"allure serve {ALLURE_REPORT_DIR}", shell=True)
+
+def after_scenario(context):
+    context.driver.quit()
+    # subprocess.run(f"allure serve {ALLURE_REPORT_DIR}", shell=True)
+
 

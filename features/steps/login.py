@@ -36,4 +36,6 @@ def step_impl(context):
 def step_impl(context):
     dashboard_page = DashboardPage(context.driver)
     context.dashboard_page = dashboard_page
-    dashboard_page.is_username_visible(username_text_locator)
+    username = dashboard_page.is_present(username_text_locator)
+    dashboard_page.click_random_movie()
+    assert username, True
