@@ -86,7 +86,6 @@ class BasePage:
             ).click()
         except TimeoutException:
             print(f"Could not find or click the element {by_locator}")
-            self.driver.save_screenshot("scroll_and_click_failure.png")
             raise
 
     def scroll_to_middle(self):
