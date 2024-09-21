@@ -1,13 +1,9 @@
-from time import sleep
-
 from behave import *
 
 from features.pages.DashboardPage import DashboardPage
 from features.pages.HistoryPage import HistoryPage
 from features.pages.MovieDetailPage import MovieDetailPage
 from features.pages.MoviesPage import MoviesPage
-
-movies_url = "https://trakt.tv/movies/trending"
 
 @given("I am in the Movies page")
 def step_impl(context):
@@ -32,14 +28,12 @@ def step_impl(context):
 def step_impl(context):
     movie_details_page = MovieDetailPage(context.driver)
     context.movie_details_page = movie_details_page
-    sleep(2)
     movie_details_page.click_add_to_history_button()
 
 @step("I click profile dropdown")
 def step_impl(context):
     movie_details_page = MovieDetailPage(context.driver)
     context.movie_details_page = movie_details_page
-    sleep(2)
     movie_details_page.hover_user_dropdown_button()
 
 
@@ -47,7 +41,6 @@ def step_impl(context):
 def step_impl(context):
     movie_details_page = MovieDetailPage(context.driver)
     context.movie_details_page = movie_details_page
-    sleep(2)
     movie_details_page.click_history_button()
 
 
@@ -64,7 +57,6 @@ def step_impl(context):
 def step_impl(context):
     movie_details_page = MovieDetailPage(context.driver)
     context.movie_details_page = movie_details_page
-    sleep(5)
     movie_details_page.click_history_added_button()
 
 
@@ -80,5 +72,6 @@ def step_impl(context):
     context.history_page = history_page
     movie_text_on_detail_page = context.current_movie_title
     movie_text_on_history = context.history_page.get_movie_title_in_history()
-    assert movie_text_on_history is None or movie_text_on_detail_page not in movie_text_on_history, \
+    no_history_alert = history_page.is_visible_no_history_alert()
+    assert movie_text_on_history is None or movie_text_on_detail_page not in movie_text_on_history or no_history_alert , \
         f"Error: Movie '{movie_text_on_detail_page}' is still visible in history."

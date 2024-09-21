@@ -1,8 +1,3 @@
-from time import sleep
-
-from selenium.common import TimeoutException
-from selenium.webdriver.common.by import By
-
 from features.locators.MovieDetailLocators import user_dropdown_section, history_user_dropdown_option, \
     current_movie_text, add_to_history_button, all_plays_button, added_to_history_button
 from features.pages.BasePage import BasePage
@@ -20,7 +15,6 @@ class MovieDetailPage(BasePage):
 
     def hover_user_dropdown_button(self):
         self.hover_and_wait_for_click(user_dropdown_section, history_user_dropdown_option)
-        sleep(5)
 
     def click_history_button(self):
         pass
@@ -33,4 +27,7 @@ class MovieDetailPage(BasePage):
 
     def click_history_added_button(self):
          self.click(added_to_history_button)
+
+
+
 

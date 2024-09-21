@@ -1,4 +1,4 @@
-from features.locators.HistoryLocators import history_title, movie_title_on_history
+from features.locators.HistoryLocators import history_title, movie_title_on_history, alert_of_no_history
 from features.locators.MovieDetailLocators import user_dropdown_section, history_user_dropdown_option, \
     current_movie_text
 from features.pages.BasePage import BasePage
@@ -25,5 +25,11 @@ class HistoryPage(BasePage):
         self.click(history_user_dropdown_option)
 
     def get_movie_title_in_history(self):
-        return self.get_text(movie_title_on_history)
+        movie_title = self.get_text(movie_title_on_history)
+        if movie_title == "Error: Element not found.":
+            print("Movie title not found in history.")
+            return None
+        return movie_title
 
+    def is_visible_no_history_alert(self):
+        return self.is_visible(alert_of_no_history)
