@@ -9,7 +9,7 @@ from selenium.webdriver.support import expected_conditions as EC
 class BasePage:
     def __init__(self, driver):
         self.driver = driver
-        self.timeout = 40
+        self.timeout = 10
 
     def click(self, by_locator):
         WebDriverWait(self.driver, self.timeout).until(EC.visibility_of_element_located(by_locator)).click()
@@ -54,6 +54,24 @@ class BasePage:
         element = WebDriverWait(self.driver, self.timeout).until(EC.visibility_of_element_located(by_locator))
         actions = ActionChains(self.driver)
         actions.move_to_element(element).perform()
+
+    def hover_and_wait_for_click(self, hover_locator, click_locator):
+        # Wait for the element to hover over to be visible
+        hover_element = WebDriverWait(self.driver, self.timeout).until(
+            EC.visibility_of_element_located(hover_locator)
+        )
+
+        # Hover over the element
+        actions = ActionChains(self.driver)
+        actions.move_to_element(hover_element).perform()
+
+        # Wait for the element to become clickable after hover
+        clickable_element = WebDriverWait(self.driver, self.timeout).until(
+            EC.element_to_be_clickable(click_locator)
+        )
+
+        # Click the element
+        clickable_element.click()
 
     def search_text_on_page(self, by_locator):
         text_to_search = self.get_text(by_locator)
