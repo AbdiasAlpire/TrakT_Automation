@@ -4,6 +4,8 @@ from features.pages.DashboardPage import DashboardPage
 from features.pages.HistoryPage import HistoryPage
 from features.pages.MovieDetailPage import MovieDetailPage
 from features.pages.MoviesPage import MoviesPage
+from utilities.DataGenerator import UniqueDataGenerator
+
 
 @given("I am in the Movies page")
 def step_impl(context):
@@ -75,3 +77,33 @@ def step_impl(context):
     no_history_alert = history_page.is_visible_no_history_alert()
     assert movie_text_on_history is None or movie_text_on_detail_page not in movie_text_on_history or no_history_alert , \
         f"Error: Movie '{movie_text_on_detail_page}' is still visible in history."
+
+
+@step("I click add comment button")
+def step_impl(context):
+    movie_details_page = MovieDetailPage(context.driver)
+    context.movie_details_page = movie_details_page
+    movie_details_page.click_add_comment_button()
+
+
+@step("I write a comment on the comment box section")
+def step_impl(context):
+    data_generator = UniqueDataGenerator()
+    movie_details_page = MovieDetailPage(context.driver)
+    context.movie_details_page = movie_details_page
+    movie_details_page.fill_movie_comment_input(data_generator.generate_unique_movie_comment())
+
+
+@step("I click submit comment button")
+def step_impl(context):
+    movie_details_page = MovieDetailPage(context.driver)
+    context.movie_details_page = movie_details_page
+    movie_details_page.click_submit_comment_button()
+
+
+@then("I should see an alert about invalid comment")
+def step_impl(context):
+    movie_details_page = MovieDetailPage(context.driver)
+    context.movie_details_page = movie_details_page
+    is_comment_posted = movie_details_page.is_comment_posted()
+    assert is_comment_posted, True

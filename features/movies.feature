@@ -26,3 +26,11 @@ Feature: Movies functionalities
     And I click all play's button
     And I click profile dropdown
     Then I should be able to see my removed movie
+
+  Scenario: Comment an invalid comment alert
+    Given I am in the Movies page
+    When I click a movie
+    And I click add comment button
+    And I write a comment on the comment box section
+    And I click submit comment button
+    Then I should see an alert about invalid comment

@@ -1,5 +1,6 @@
 from features.locators.MovieDetailLocators import user_dropdown_section, history_user_dropdown_option, \
-    current_movie_text, add_to_history_button, all_plays_button, added_to_history_button
+    current_movie_text, add_to_history_button, all_plays_button, added_to_history_button, add_comment_button, \
+    movie_comment_input, comment_posted_button, submit_button
 from features.pages.BasePage import BasePage
 
 class MovieDetailPage(BasePage):
@@ -28,6 +29,16 @@ class MovieDetailPage(BasePage):
     def click_history_added_button(self):
          self.click(added_to_history_button)
 
+    def click_add_comment_button(self):
+        self.click(add_comment_button)
 
+    def fill_movie_comment_input(self, movie_comment):
+        self.send_keys(movie_comment_input, movie_comment)
+
+    def is_comment_posted(self):
+        return self.is_visible(comment_posted_button)
+
+    def click_submit_comment_button(self):
+        self.click(submit_button)
 
 
