@@ -1,6 +1,5 @@
 import os
 import shutil
-import subprocess
 import allure
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
@@ -18,13 +17,8 @@ url = ConfigReader.read_configuration("Basic Information", "url")
 browser = ConfigReader.read_configuration("Basic Information", "browser")
 ALLURE_REPORT_DIR = 'allure_reports'
 
-def clean_allure_reports():
-    if os.path.exists(ALLURE_REPORT_DIR):
-        shutil.rmtree(ALLURE_REPORT_DIR)
-    os.makedirs(ALLURE_REPORT_DIR)
 
 def before_scenario(context, scenario):
-    clean_allure_reports()
     if browser == 'chrome':
         chrome_install = ChromeDriverManager().install()
         folder = os.path.dirname(chrome_install)
